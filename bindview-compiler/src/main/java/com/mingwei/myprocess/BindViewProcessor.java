@@ -2,9 +2,11 @@ package com.mingwei.myprocess;
 
 import com.google.auto.service.AutoService;
 import com.mingwe.myanno.BindView;
+import com.mingwe.myanno.BindViewFonts;
 import com.mingwe.myanno.OnClick;
 import com.mingwei.myprocess.model.AnnotatedClass;
 import com.mingwei.myprocess.model.BindViewField;
+import com.mingwei.myprocess.model.BindViewFontsField;
 import com.mingwei.myprocess.model.OnClickMethod;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
@@ -64,6 +66,7 @@ public class BindViewProcessor extends AbstractProcessor {
     public Set<String> getSupportedAnnotationTypes() {
         Set<String> types = new LinkedHashSet<>();
         types.add(BindView.class.getCanonicalName());
+        types.add(BindViewFonts.class.getCanonicalName());
         types.add(OnClick.class.getCanonicalName());
         return types;
     }
@@ -78,6 +81,7 @@ public class BindViewProcessor extends AbstractProcessor {
         mAnnotatedClassMap.clear();
         try {
             processBindView(roundEnv);
+            processBindViewFonts(roundEnv);
             processOnClick(roundEnv);
         } catch (IllegalArgumentException e) {
             error(e.getMessage());
@@ -107,7 +111,17 @@ public class BindViewProcessor extends AbstractProcessor {
             System.out.print("p_element=" + element.getSimpleName() + ",p_set=" + element.getModifiers());
         }
     }
-
+    /**
+     * @param roundEnv
+     */
+    private void processBindViewFonts(RoundEnvironment roundEnv) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(BindViewFonts.class)) {
+            AnnotatedClass annotatedClass = getAnnotatedClass(element);
+            BindViewFontsField field = new BindViewFontsField(element);
+            annotatedClass.addField(field);
+            System.out.print("p_element=" + element.getSimpleName() + ",p_set=" + element.getModifiers());
+        }
+    }
     private AnnotatedClass getAnnotatedClass(Element element) {
         TypeElement encloseElement = (TypeElement) element.getEnclosingElement();
         String fullClassName = encloseElement.getQualifiedName().toString();

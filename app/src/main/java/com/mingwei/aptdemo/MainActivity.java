@@ -9,20 +9,23 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mingwe.myanno.BindView;
-import com.mingwe.myanno.Fonts;
+import com.mingwe.myanno.BindViewFonts;
 import com.mingwe.myanno.OnClick;
 import com.mingwei.myapi.ButterKnife;
 
+import static com.mingwei.aptdemo.R.id.btn2;
+
 public class MainActivity extends Activity {
 
-   public final String path="fonts/bold.otf";
-    public final String path_Regular="fonts/Regular.otf";
-    @BindView(value = R.id.btn1, fontsValue = path)
+    public final String path = "fonts/bold.otf";
+    public final String path_Regular = "fonts/Regular.otf";
+    @BindViewFonts(value = R.id.btn1, fontsValue = path)
     public Button mBtn;
-    @BindView(value = R.id.btn2, fontsValue = path)
+    @BindViewFonts(value = btn2, fontsValue = path)
     public Button mBtn2;
-    @BindView(value = R.id.liner, fontsValue = "")
+    @BindView(value = R.id.liner)
     public LinearLayout liner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,14 +37,38 @@ public class MainActivity extends Activity {
 //        Utls.setFonts(this,mBtn,path);
     }
 
-    @OnClick({R.id.btn1})
-    public void click() {
-        Toast.makeText(this, "show", Toast.LENGTH_SHORT).show();
+    //    public void onClicks() {
+//        Toast.makeText(this, "showbtn1", Toast.LENGTH_SHORT).show();
+//    }
+//    @OnClick(R.id.btn4)
+//    public void onClicks4() {
+//        Toast.makeText(this, "showbtn4", Toast.LENGTH_SHORT).show();
+//    }
+    @OnClick({R.id.btn1, R.id.btn2, R.id.btn3})
+    public void onClicks() {
+    }
+    @OnClick( R.id.btn4)
+    public void onClicks4( ) {
+        Toast.makeText(this, "showbtn42", Toast.LENGTH_SHORT).show();
+    }
+    public void onClicks(View v) {
+        Toast.makeText(this, "show" + v.getId(), Toast.LENGTH_SHORT).show();
+        switch (v.getId()){
+            case R.id.btn1:
+                Toast.makeText(this, "showbtn1", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn2:
+                Toast.makeText(this, "showbtn2", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.btn3:
+                Toast.makeText(this, "showbtn3", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
-    @OnClick({R.id.btn2})
-    public void click2() {
-        Toast.makeText(this, "show2", Toast.LENGTH_SHORT).show();
-    }
+//    @OnClick({R.id.btn2})
+//    public void click2(View v) {
+//        Toast.makeText(this, "show2view=", Toast.LENGTH_SHORT).show();
+//    } ;
 
 }

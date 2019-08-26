@@ -19,6 +19,8 @@ public class OnClickMethod {
 
     public int[] ids;
 
+    public List<? extends VariableElement> param;
+
     public OnClickMethod(Element element) {
         if (element.getKind() != ElementKind.METHOD) {
             throw new IllegalArgumentException(String.format("Only method can be annotated width @%s",
@@ -27,6 +29,7 @@ public class OnClickMethod {
         ExecutableElement methodElement = (ExecutableElement) element;
         mMethodName = methodElement.getSimpleName();
         ids = methodElement.getAnnotation(OnClick.class).value();
+        param=methodElement.getParameters();
         if (ids == null) {
             throw new IllegalArgumentException(String.format("Must set valid ids for @%s", OnClick.class.getSimpleName()));
         } else {
@@ -46,5 +49,9 @@ public class OnClickMethod {
 
     public Name getMethodName() {
         return mMethodName;
+    }
+
+    public List<? extends VariableElement> getParam() {
+        return param;
     }
 }

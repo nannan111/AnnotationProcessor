@@ -1,6 +1,7 @@
 package com.mingwei.myprocess.model;
 
 import com.mingwe.myanno.BindView;
+import com.mingwe.myanno.BindViewFonts;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
@@ -14,25 +15,25 @@ import javax.lang.model.type.TypeMirror;
  * Github:  https://github.com/gumingwei
  * 被BindView注解标记的字段的模型类
  */
-public class BindViewField extends BindField{
+public class BindViewFontsField extends BindField{
 
     private VariableElement mFieldElement;
 
     private int mResId;
-//    private String fontsPaths;
+    private String fontsPaths;
 
-    public BindViewField(Element element) throws IllegalArgumentException {
+    public BindViewFontsField(Element element) throws IllegalArgumentException {
         if (element.getKind() != ElementKind.FIELD) {
             throw new IllegalArgumentException(String.format("Only field can be annotated with @%s",
-                    BindView.class.getSimpleName()));
+                    BindViewFonts.class.getSimpleName()));
         }
         mFieldElement = (VariableElement) element;
-        BindView bindView = mFieldElement.getAnnotation(BindView.class);
+        BindViewFonts bindView = mFieldElement.getAnnotation(BindViewFonts.class);
         mResId = bindView.value();
-//        fontsPaths=bindView.fontsValue();
-        if (mResId < 0) {
+        fontsPaths=bindView.fontsValue();
+        if (mResId < 0||fontsPaths==null) {
             throw new IllegalArgumentException(String.format("value() in %s for field % is not valid",
-                    BindView.class.getSimpleName(), mFieldElement.getSimpleName()));
+                    BindViewFonts.class.getSimpleName(), mFieldElement.getSimpleName()));
         }
     }
 
@@ -44,17 +45,15 @@ public class BindViewField extends BindField{
         return mResId;
     }
 
-//    public String getFontsPaths() {
-//        return fontsPaths;
-//    }
-//
-//    public void setFontsPaths(String fontsPaths) {
-//        this.fontsPaths = fontsPaths;
-//    }
+    public String getFontsPaths() {
+        return fontsPaths;
+    }
+
+    public void setFontsPaths(String fontsPaths) {
+        this.fontsPaths = fontsPaths;
+    }
 
     public TypeMirror getFieldType() {
         return mFieldElement.asType();
     }
-
-
 }

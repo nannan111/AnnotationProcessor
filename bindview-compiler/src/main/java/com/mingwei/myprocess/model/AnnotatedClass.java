@@ -14,8 +14,6 @@ import java.util.List;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
-import sun.rmi.runtime.Log;
-
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PUBLIC;
 
@@ -33,7 +31,7 @@ public class AnnotatedClass {
     /**
      * 成员变量
      */
-    public List<BindViewField> mFiled;
+    public List<BindField> mFiled;
     /**
      * 方法
      */
@@ -54,7 +52,7 @@ public class AnnotatedClass {
         return mClassElement.getQualifiedName().toString();
     }
 
-    public void addField(BindViewField field) {
+    public void addField(BindField field) {
         mFiled.add(field);
     }
 
@@ -80,19 +78,25 @@ public class AnnotatedClass {
 //        methodBuilder.addStatement("$T isTextView", boolean.class);
         methodBuilder.addStatement("$T view", TypeUtil.ANDROID_VIEW);
 //        methodBuilder.addStatement("$T listener1", String.class);
-        for (BindViewField field : mFiled) {
+        for (BindField field1 : mFiled) {
 //            methodBuilder.addStatement("listener1 = $L ", "\"aaacf\"");
 //            methodBuilder.addStatement("finder.findTextView(source,$L).setText(listener1)",field.getResId());
-            methodBuilder.addStatement("view=host.$N=($T)finder.findView(source,$L)", field.getFieldName(), ClassName.get(field.getFieldType()), field.getResId());
+            if (field1 instanceof BindViewFontsField) {
+                BindViewFontsField field = (BindViewFontsField) field1;
+                methodBuilder.addStatement("view=host.$N=($T)finder.findView(source,$L)", field.getFieldName(), ClassName.get(field.getFieldType()), field.getResId());
 //            methodBuilder.addStatement("isTextView = finder.isTextView(source,view)");
-            /*
-             * 添加判断方法
-             * 如果是TextView才去设置字体
-             */
-            methodBuilder.addCode("if (finder.isTextView(source,view)) {\n");
-            methodBuilder.addStatement("typeface = finder.getTypeface(source,$L)", "\"" + field.getFontsPaths() + "\"");
-            methodBuilder.addStatement("finder.findTextView(source,$L).setTypeface(typeface)", field.getResId());
-            methodBuilder.addCode("}\n");
+                /*
+                 * 添加判断方法
+                 * 如果是TextView才去设置字体
+                 */
+//                methodBuilder.addCode("if (finder.isTextView(source,view)) {\n");
+                methodBuilder.addStatement("typeface = finder.getTypeface(source,$L)", "\"" + field.getFontsPaths() + "\"");
+                methodBuilder.addStatement("finder.findTextView(source,$L).setTypeface(typeface)", field.getResId());
+//                methodBuilder.addCode("}\n");
+            } else if (field1 instanceof BindViewField) {
+                BindViewField field = (BindViewField) field1;
+                methodBuilder.addStatement("view=host.$N=($T)finder.findView(source,$L)", field.getFieldName(), ClassName.get(field.getFieldType()), field.getResId());
+            }
         }
         /**
          * 声明Listener
@@ -100,7 +104,17 @@ public class AnnotatedClass {
         if (mMethod.size() > 0) {
             methodBuilder.addStatement("$T listener", TypeUtil.ONCLICK_LISTENER);
         }
-
+//        TypeSpec listener = TypeSpec.anonymousClassBuilder("")
+//                .addSuperinterface(TypeUtil.ONCLICK_LISTENER)
+//                .addMethod(MethodSpec.methodBuilder("onClick")
+//                        .addAnnotation(Override.class)
+//                        .addModifiers(PUBLIC)
+//                        .returns(TypeName.VOID)
+//                        .addParameter(TypeUtil.ANDROID_VIEW, "view")
+//                        .addStatement("host.$N()", "onClicks")
+//                        .build())
+//                .build();
+//        methodBuilder.addStatement("listener = $L ", listener);
         for (OnClickMethod method : mMethod) {
             TypeSpec listener = TypeSpec.anonymousClassBuilder("")
                     .addSuperinterface(TypeUtil.ONCLICK_LISTENER)
@@ -109,7 +123,7 @@ public class AnnotatedClass {
                             .addModifiers(PUBLIC)
                             .returns(TypeName.VOID)
                             .addParameter(TypeUtil.ANDROID_VIEW, "view")
-                            .addStatement("host.$N()", method.getMethodName())
+                            .addStatement("host.$N(view)", method.getMethodName())
                             .build())
                     .build();
             methodBuilder.addStatement("listener = $L ", listener);

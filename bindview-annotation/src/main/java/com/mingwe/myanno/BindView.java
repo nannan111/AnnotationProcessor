@@ -15,5 +15,4 @@ public @interface BindView {
      * @return
      */
     int value();
-    String fontsValue();
 }

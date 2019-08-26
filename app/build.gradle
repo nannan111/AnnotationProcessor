@@ -1,14 +1,11 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
-
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
-        applicationId "com.mingwei.aptdemo"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -18,14 +15,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.0.1'
+    implementation 'com.android.support:appcompat-v7:23.0.1'
 
-    compile project(':bindview-annotation')
-    compile project(':bindview-api')
-    apt project(':bindview-compiler')
+    implementation project(':bindview-annotation')
+    implementation project(':bindview-api')
+    annotationProcessor project(':bindview-compiler')
 }

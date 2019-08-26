@@ -45,12 +45,17 @@ public class MainActivity extends Activity {
 //        Toast.makeText(this, "showbtn4", Toast.LENGTH_SHORT).show();
 //    }
     @OnClick({R.id.btn1, R.id.btn2, R.id.btn3})
-    public void onClicks() {
+    public void onClicks1() {
+
     }
-    @OnClick( R.id.btn4)
-    public void onClicks4( ) {
-        Toast.makeText(this, "showbtn42", Toast.LENGTH_SHORT).show();
+    public void onClicks3(View v) {
+
     }
+
+//    @OnClick( R.id.btn4)
+//    public void onClicks4( ) {
+//        Toast.makeText(this, "showbtn42", Toast.LENGTH_SHORT).show();
+//    }
     public void onClicks(View v) {
         Toast.makeText(this, "show" + v.getId(), Toast.LENGTH_SHORT).show();
         switch (v.getId()){

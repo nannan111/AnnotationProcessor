@@ -123,8 +123,13 @@ public class AnnotatedClass {
                             .addModifiers(PUBLIC)
                             .returns(TypeName.VOID)
                             .addParameter(TypeUtil.ANDROID_VIEW, "view")
-                            .addStatement("host.$N(view)", method.getMethodName())
+                            .addStatement("click(view)")
                             .build())
+                    .addMethod(MethodSpec.methodBuilder("click")
+                            .addParameter(TypeUtil.ANDROID_VIEW, "view")
+                            .addStatement("host.$N()", method.getMethodName())
+                            .build())
+
                     .build();
             methodBuilder.addStatement("listener = $L ", listener);
             for (int id : method.ids) {

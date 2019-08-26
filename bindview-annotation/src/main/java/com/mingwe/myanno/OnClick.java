@@ -12,7 +12,7 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 /**
  * Created by mingwei on 12/20/16.
  */
-@Target({METHOD,FIELD})
+@Target({METHOD})
 @Retention(CLASS)
 public @interface OnClick {
     int[] value();

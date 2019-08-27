@@ -30,6 +30,10 @@ android {
         //重命名
         rename ('classes.jar', 'anotationjar.jar')
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     makeJar.dependsOn(build)
 }

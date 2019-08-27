@@ -1,27 +1,22 @@
 package com.mingwei.aptdemo;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.mingwe.myanno.BindView;
 import com.mingwe.myanno.BindViewFonts;
 import com.mingwe.myanno.OnClick;
 import com.mingwei.myapi.ButterKnife;
-
 import static com.mingwei.aptdemo.R.id.btn2;
-
 public class MainActivity extends Activity {
 
     public final String path = "fonts/bold.otf";
     public final String path_Regular = "fonts/Regular.otf";
-    @BindViewFonts(value = R.id.btn1, fontsValue = path)
+    @BindView(value = R.id.btn1)
     public Button mBtn;
-    @BindViewFonts(value = btn2, fontsValue = path)
+    @BindViewFonts(value = R.id.btn2, fontsValue = path)
     public Button mBtn2;
     @BindView(value = R.id.liner)
     public LinearLayout liner;
@@ -45,17 +40,18 @@ public class MainActivity extends Activity {
 //        Toast.makeText(this, "showbtn4", Toast.LENGTH_SHORT).show();
 //    }
     @OnClick({R.id.btn1, R.id.btn2, R.id.btn3})
-    public void onClicks1() {
-
-    }
-    public void onClicks3(View v) {
-
+    public void onClicks1(View view) {
+        Toast.makeText(this, "showbtn42=id"+view.getId(), Toast.LENGTH_SHORT).show();
     }
 
-//    @OnClick( R.id.btn4)
-//    public void onClicks4( ) {
-//        Toast.makeText(this, "showbtn42", Toast.LENGTH_SHORT).show();
-//    }
+    public void onClicks1(int v) {
+        Toast.makeText(this, "showbtn43", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick( R.id.btn4)
+    public void onClicks4() {
+        Toast.makeText(this, "showbtn43", Toast.LENGTH_SHORT).show();
+    }
     public void onClicks(View v) {
         Toast.makeText(this, "show" + v.getId(), Toast.LENGTH_SHORT).show();
         switch (v.getId()){

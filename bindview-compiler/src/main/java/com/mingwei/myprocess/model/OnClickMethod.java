@@ -41,9 +41,9 @@ public class OnClickMethod {
         }
 
         List<? extends VariableElement> parameters = methodElement.getParameters();
-        if (parameters.size() > 0) {
-            throw new IllegalArgumentException(String.format("The method annotated with @%s must have no parameters", OnClick.class.getSimpleName()));
-        }
+//        if (parameters.size() > 0) {
+//            throw new IllegalArgumentException(String.format("The method annotated with @%s must have no parameters", OnClick.class.getSimpleName()));
+//        }
 
     }
 

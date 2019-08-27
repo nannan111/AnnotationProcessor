@@ -4,6 +4,7 @@ import com.mingwei.myprocess.TypeUtil;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
@@ -104,34 +105,33 @@ public class AnnotatedClass {
         if (mMethod.size() > 0) {
             methodBuilder.addStatement("$T listener", TypeUtil.ONCLICK_LISTENER);
         }
-//        TypeSpec listener = TypeSpec.anonymousClassBuilder("")
-//                .addSuperinterface(TypeUtil.ONCLICK_LISTENER)
-//                .addMethod(MethodSpec.methodBuilder("onClick")
-//                        .addAnnotation(Override.class)
-//                        .addModifiers(PUBLIC)
-//                        .returns(TypeName.VOID)
-//                        .addParameter(TypeUtil.ANDROID_VIEW, "view")
-//                        .addStatement("host.$N()", "onClicks")
-//                        .build())
-//                .build();
-//        methodBuilder.addStatement("listener = $L ", listener);
         for (OnClickMethod method : mMethod) {
-            TypeSpec listener = TypeSpec.anonymousClassBuilder("")
-                    .addSuperinterface(TypeUtil.ONCLICK_LISTENER)
-                    .addMethod(MethodSpec.methodBuilder("onClick")
-                            .addAnnotation(Override.class)
-                            .addModifiers(PUBLIC)
-                            .returns(TypeName.VOID)
-                            .addParameter(TypeUtil.ANDROID_VIEW, "view")
-                            .addStatement("click(view)")
-                            .build())
-                    .addMethod(MethodSpec.methodBuilder("click")
-                            .addParameter(TypeUtil.ANDROID_VIEW, "view")
-                            .addStatement("host.$N()", method.getMethodName())
-                            .build())
 
-                    .build();
-            methodBuilder.addStatement("listener = $L ", listener);
+            if(method.getParam()!=null&&method.getParam().size()==1) {
+                TypeSpec listener = TypeSpec.anonymousClassBuilder("")
+                        .addSuperinterface(TypeUtil.ONCLICK_LISTENER)
+                        .addMethod(MethodSpec.methodBuilder("onClick")
+                                .addAnnotation(Override.class)
+                                .addModifiers(PUBLIC)
+                                .returns(TypeName.VOID)
+                                .addParameter(TypeUtil.ANDROID_VIEW, "view")
+                                .addStatement("host.$N(view)", method.getMethodName())
+                                .build())
+                        .build();
+                methodBuilder.addStatement("listener = $L ", listener);
+            }else{
+                TypeSpec listener = TypeSpec.anonymousClassBuilder("")
+                        .addSuperinterface(TypeUtil.ONCLICK_LISTENER)
+                        .addMethod(MethodSpec.methodBuilder("onClick")
+                                .addAnnotation(Override.class)
+                                .addModifiers(PUBLIC)
+                                .returns(TypeName.VOID)
+                                .addParameter(TypeUtil.ANDROID_VIEW, "view")
+                                .addStatement("host.$N()", method.getMethodName())
+                                .build())
+                        .build();
+                methodBuilder.addStatement("listener = $L ", listener);
+            }
             for (int id : method.ids) {
                 methodBuilder.addStatement("finder.findView(source,$L).setOnClickListener(listener)", id);
             }

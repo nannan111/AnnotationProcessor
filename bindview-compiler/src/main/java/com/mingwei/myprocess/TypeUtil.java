@@ -15,4 +15,5 @@ public class TypeUtil {
     public static final ClassName ANDROID_STRING = ClassName.get("android.view", "View");
     public static final ClassName ANDROID_TYPEFACE = ClassName.get("android.graphics", "Typeface");
     public static final ClassName ANDROID_TEXTVIEW = ClassName.get("android.widget", "TextView");
+    public static final ClassName ONCLICK_LISTENER2 = ClassName.get("com.mingwei.myapi", "DebouncingOnClickListener");
 }

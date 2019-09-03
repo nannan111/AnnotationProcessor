@@ -29,7 +29,12 @@ public class ActivityFInder implements Finder {
 
     @Override
     public Typeface getTypeface(Object source, String path) {
-        return Typeface.createFromAsset(((Activity) source).getAssets(), path);
+        if(source instanceof Activity){
+            return Typeface.createFromAsset(((Activity) source).getAssets(), path);
+        }else{
+            return Typeface.createFromAsset((getContext(source)).getAssets(), path);
+        }
+
     }
     @Override
     public boolean isTextView(Object source, View view) {

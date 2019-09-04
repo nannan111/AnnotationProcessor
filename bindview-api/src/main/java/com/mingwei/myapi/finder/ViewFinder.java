@@ -25,12 +25,22 @@ public class ViewFinder implements Finder {
 
     @Override
     public TextView findTextView(Object source, int id) {
-        return (TextView) ((Activity) source).findViewById(id);
+        if(source instanceof Activity){
+            return (TextView) ((Activity) source).findViewById(id);
+        }else{
+            return (TextView) ((View)source).findViewById(id);
+        }
+
     }
 
     @Override
     public Typeface getTypeface(Object source, String path) {
-        return Typeface.createFromAsset(((Activity) source).getAssets(), path);
+        if(source instanceof Activity){
+            return Typeface.createFromAsset(((Activity) source).getAssets(), path);
+        }else{
+            return Typeface.createFromAsset((getContext(source)).getAssets(), path);
+        }
+
     }
 
     @Override

@@ -38,7 +38,9 @@ public class ButterKnife {
     public static void bind(Object host, View view) {
         bind(host, view, VIEW_FINDER);
     }
-
+    public static void bind(Object host,Activity activity, View view) {
+        bind(host, activity, ACTIVITY_FINDER);
+    }
     /**
      * 获取目标类
      *

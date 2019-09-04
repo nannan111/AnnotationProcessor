@@ -75,14 +75,14 @@ public class AnnotatedClass {
          */
         methodBuilder.addStatement("$T typeface", TypeUtil.ANDROID_TYPEFACE);
 //        methodBuilder.addStatement("$T isTextView", boolean.class);
-        methodBuilder.addStatement("$T view", TypeUtil.ANDROID_VIEW);
+//        methodBuilder.addStatement("$T view", TypeUtil.ANDROID_VIEW);
 //        methodBuilder.addStatement("$T listener1", String.class);
         for (BindField field1 : mFiled) {
 //            methodBuilder.addStatement("listener1 = $L ", "\"aaacf\"");
 //            methodBuilder.addStatement("finder.findTextView(source,$L).setText(listener1)",field.getResId());
             if (field1 instanceof BindViewFontsField) {
                 BindViewFontsField field = (BindViewFontsField) field1;
-                methodBuilder.addStatement("view=host.$N=($T)finder.findView(source,$L)", field.getFieldName(), ClassName.get(field.getFieldType()), field.getResId());
+                methodBuilder.addStatement("host.$N=($T)finder.findView(source,$L)", field.getFieldName(), ClassName.get(field.getFieldType()), field.getResId());
 //            methodBuilder.addStatement("isTextView = finder.isTextView(source,view)");
                 /*
                  * 添加判断方法
@@ -94,7 +94,7 @@ public class AnnotatedClass {
 //                methodBuilder.addCode("}\n");
             } else if (field1 instanceof BindViewField) {
                 BindViewField field = (BindViewField) field1;
-                methodBuilder.addStatement("view=host.$N=($T)finder.findView(source,$L)", field.getFieldName(), ClassName.get(field.getFieldType()), field.getResId());
+                methodBuilder.addStatement("host.$N=($T)finder.findView(source,$L)", field.getFieldName(), ClassName.get(field.getFieldType()), field.getResId());
             }
         }
         /**
